@@ -1,0 +1,420 @@
+html {
+	height: 100%;
+}
+body {
+	min-height: 100%;
+	margin: 0;
+	/*background: #F7F7F7;*/
+	background: #E7E7E7;
+	overflow: hidden;
+}
+#wrapper {
+	padding-top: 5px;
+	padding-left: 10px;
+}
+.info {
+	display: none;
+}
+#turn-indicator {
+	position:absolute;
+	display: none;
+	left: 600px;
+	top: 275px;
+	-webkit-transition: 2s;
+	z-index: -100;
+}
+/*#turn-indicator:hover {
+	border-top-color: #33363B;
+	border-top-width: 20px;
+	border-left-width: 20px;
+	border-right-width: 20px;
+	left: 600px;
+}*/
+#turn-indicator.player1 {
+	/*left: 295px;*/
+	-webkit-transform: rotate(90deg);
+}
+#turn-indicator.player2 {
+	/*left: 915px;*/
+	-webkit-transform: rotate(-90deg);
+}
+.arrow-down {
+	width: 0; 
+	height: 0; 
+/*	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid #ccc;*/
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-top: 20px solid #ccc;
+	/*border-top: 20px solid #33363B;*/
+}
+#screen {
+	position: absolute;
+	display: block;
+	top: 0;
+/*	left: -10px;*/
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	text-align:center;
+	z-index: 100;
+	background: rgba(0, 0, 0, 0.6);
+}
+#modal {
+	background: #ccc;
+	display: block;
+	margin: 100px auto;
+	height: 600px;
+	width: 600px;
+/*	max-height: 600px;*/
+	border-radius: 15px;
+/*	border: 20px solid #ccc;*/
+	border: 20px solid rgba(255,255,255,.05);
+	box-shadow: inset 0 0 45px rgba(255,255,255,.1), 0 12px 20px -10px rgba(0,0,0,.6);
+}
+#modal.title-bg {
+	background: url('img/golf.jpg');
+	/*height: 100%;*/
+	background-position: 57% 20%;
+	-webkit-filter: grayscale(.3);
+}
+.title-screen div, #modal .start-screen div, #modal .score-screen div, #modal .settings-screen div, .instructions-screen div {
+	width: 50%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	font: bold 56px sans-serif;
+	color: #FFF;
+	text-align: center;
+	text-shadow: 0 1px rgba(0,0,0,.3);
+	float: left;
+}
+#modal .title-screen .title, #modal .start-screen .title, .instructions-screen .title {
+	text-shadow: 1px 1px 4px rgba(0,0,0, .3);
+}
+#modal .title-screen .title {
+	font-size: 95px;
+}
+#modal .start-screen .title {
+	font-size: 60px;
+	margin-top: 15px;
+	margin-bottom: 65px;
+}
+.byline {
+	position: absolute;
+	right: 30px;
+	bottom: 0;
+	margin: 10px 0 40px 0;
+	color: white;
+	font: bold sans-serif;
+	z-index: 5000;
+}
+#modal .start-screen input {
+	height: 50px;
+	font: 44px sans-serif;
+	text-align: center;
+	color: #555;
+}
+.title-screen div, #modal .score-screen .score, #modal .start-screen div, .instructions-screen div {
+	width: 100%;
+}
+.start-screen, .score-screen, .settings-screen, .instructions-screen {
+	display: none;
+}
+#modal .settings-screen .option {
+	width: 100%;
+	font-size: 48px;
+	margin-bottom: 18px;
+}
+#modal .settings-screen .image {
+	width: 32%;
+}
+#modal .image img {
+	cursor: pointer;
+}
+#modal #player1-scorecard-name, #modal #player2-scorecard-name {
+	width: 50%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	border-bottom: 10px solid #eee;
+	font: bold 4em sans-serif;
+	padding: 0 0 14px 0;
+	color: #FFF;
+	text-align: center;
+	text-shadow: 0 1px rgba(0,0,0,.3);
+	float: left;
+}
+#modal #player1-scorecard-name {
+	border-right: 10px solid #eee;
+}
+#modal #scores {
+	width: 100%;
+	height: 80%;
+	overflow-y: auto;
+}
+#modal .score {
+	width: 100%;
+}
+.board {
+	position: relative;
+	padding:20px;
+	/*margin: 0 auto;*/
+	width: 580px;
+	/*width: 46%;*/
+/*	background: #57B7D7;*/
+	float: left;
+}
+.board:last-child {
+	float: right;
+}
+#options p {
+	font: bold 5em sans-serif;
+	color: #FFF;
+	text-shadow: 0 1px rgba(0,0,0,.3);
+	float: right;
+}
+.deal, .draw, .scorecard, .reset, .settings, .start, .rules, .new-game, .title-rules, .back {
+	width: 200px;
+	height: 100px;
+	margin: 0 15px;
+	border-radius: 10px;
+	background: #aaa;
+	box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
+	color: #555;
+	font: bold 3em sans-serif;
+	border: none;
+	text-transform: uppercase;
+	float: left;
+}
+.instructions-screen .instructions {
+	overflow-y: auto;
+	font-weight: normal;
+	font-size: 28px;
+	line-height: normal;
+	text-align: left;
+	height: 390px;
+/*	height: 520px;*/
+	text-shadow: none;
+	padding: 15px;
+	margin-top: 15px;
+	margin-bottom: 17px;
+}
+.instructions h3 {
+	margin-top: .7em;
+	margin-bottom: -.4em;
+}
+.instructions h3:first-child {
+	margin-top: 0;
+}
+
+.new-game {
+	width: 325px;
+	margin-top: 375px;
+}
+.title-rules {
+	width: 215px;
+	margin-top: 375px;
+}
+.scorecard {
+	width: 430px;
+	margin-top: 20px;
+}
+.reset {
+	width: 275px;
+	position: absolute;
+	top: 30px;
+	right: 10px;
+}
+.settings {
+	width: 275px;
+	position: absolute;
+	top: 150px;
+	right: 10px;
+}
+.rules {
+	width: 275px;
+	position: absolute;
+	top: 270px;
+	right: 10px;
+}
+.start {
+	float: none;
+	margin-top: 50px;
+}
+.deal:hover, .draw:hover, .scorecard:hover, .reset:hover, .settings:hover, .start:hover, .rules:hover, .new-game:hover, .title-rules:hover, .back:hover  {
+	background: #BC4F49;
+	color: #CCC;
+	cursor: pointer;
+}
+.deal:active, .draw:active, .scorecard:active, .reset:active, .settings:active, .start:active, .rules:active, .new-game:active, .title-rules:active, .back:active  {
+	/*margin-top: 0px;*/
+	width: 196px;
+	height: 98px;
+	margin-right: 19px;
+	box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 8px 15px -10px rgba(0,0,0,.4);
+}
+.reset:active, .settings:active, .rules:active {
+	width: 268px;
+}
+.new-game:active {
+	width: 321px;
+}
+.title-rules:active {
+	width: 211px;
+}
+.scorecard:active {
+	width: 426px;
+	margin-top: 20px;
+}
+.disabled {
+	opacity: 0.4;
+}
+.disabled:hover {
+	background: #aaa;
+	color: #555;
+	cursor: default;
+}
+.disabled:active {
+	width: 200px;
+	height: 100px;
+	margin: 0 15px;
+	box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
+}
+button {
+	outline: 0;
+}
+.card {
+	margin: 10px;
+	width: 173px;
+	/*width: 28%;*/
+	/*min-width: 120px;*/
+	height: 230px;
+	cursor: pointer;
+	float: left;
+	position: relative;
+	z-index: 1;
+}
+.card div {
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	box-sizing: border-box;
+	background-repeat: no-repeat;
+	box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
+	color: #FFF;
+	text-align: center;
+	/*text-shadow: 0 1px rgba(0,0,0,.3);*/
+	font: bold 6em sans-serif;
+	line-height: 200px;
+	border: 15px solid white;
+}
+.deck-2 {
+	margin-left: -376px;
+}
+
+.discard-2 {
+	margin-left: -183px;
+	display: none;
+}
+
+#community {
+	z-index: -1;
+}
+.side-a {
+	background: #498FBC url('img/R-card-back-trans.png');
+	background-position: 50% 50%;
+	background-size: 90px;
+}
+.side-b {
+	background: #E7E7E7;
+}
+.spades {
+	background: #33363B url('img/suits.png');
+	background-position: -13px -21px;
+	background-size: 341px 409px;
+}
+.hearts {
+	background: #BC4F49 url('img/suits.png');
+	background-position: -146px 32px;
+	background-size: 315px 398px;
+}
+.clubs {
+	background: #33363B url('img/suits.png');
+	background-position: -186px -224px;
+	background-size: 315px 406px;
+}
+.diamonds {
+	background: #BC4F49 url('img/suits.png');
+	background-position: 16px -193px;
+	background-size: 376px 409px;
+}
+
+.enabled:hover .side-a, .enabled:hover .side-b, .selected .side-b {
+	border-color: #FFEC85 !important;
+}
+
+#player1 .card-0 {
+	top: 538px;
+	z-index: 12;
+}
+#player1 .card-1 {
+	left: -193px;
+	top: 538px;
+	z-index: 10;
+}
+#player1 .card-2 {
+	left: -386px;
+	top: 538px;
+	z-index: 8;
+}
+#player1 .card-3 {
+	left: 0px;
+	top: 288px;
+	z-index: 6;
+}
+#player1 .card-4 {
+	left: -193px;
+	top: 288px;
+	z-index: 4;
+}
+#player1 .card-5 {
+	left: -386px;
+	top: 288px;
+	z-index: 2;
+}
+
+#player2 .card-0 {
+	left: -620px;
+	top: 538px;
+	z-index: 11;
+}
+#player2 .card-1 {
+	left: -813px;
+	top: 538px;
+	z-index: 9;
+}
+#player2 .card-2 {
+	left: -1006px;
+	top: 538px;
+	z-index: 7;
+}
+#player2 .card-3 {
+	left: -620px;
+	top: 288px;
+	z-index: 5;
+}
+#player2 .card-4 {
+	left: -813px;
+	top: 288px;
+	z-index: 3;
+}
+#player2 .card-5 {
+	left: -1006px;
+	top: 288px;
+	z-index: 1;
+}

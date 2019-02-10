@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Golf</title>
+	<link rel="stylesheet" type="text/css" href="page.css">
+	<link rel="stylesheet" type="text/css" href="transforms.css">
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" src="cards.js?"></script>
+	<script type="text/javascript" src="game.js?"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="turn-indicator" class="arrow-down"></div>
+	<div id="player1" class="board">
+		<div class="card card-0" data-card="0">
+			<div class="side-a"></div>
+			<div class="side-b diamonds">K</div>
+		</div>
+		<div class="card card-1" data-card="1">
+			<div class="side-a"></div>
+			<div class="side-b hearts">3</div>
+		</div>
+		<div class="card card-2" data-card="2">
+			<div class="side-a"></div>
+			<div class="side-b spades">6</div>
+		</div>
+		<div class="card card-3" data-card="3">
+			<div class="side-a"></div>
+			<div class="side-b clubs">Q</div>
+		</div>
+		<div class="card card-4" data-card="4">
+			<div class="side-a"></div>
+			<div class="side-b hearts">10</div>
+		</div>
+		<div class="card card-5" data-card="5">
+			<div class="side-a"></div>
+			<div class="side-b spades">2</div>
+		</div>
+	</div>
+	<div id="player2" class="board">
+		<div class="card card-0" data-card="0">
+			<div class="side-a"></div>
+			<div class="side-b diamonds">K</div>
+		</div>
+		<div class="card card-1" data-card="1">
+			<div class="side-a"></div>
+			<div class="side-b hearts">3</div>
+		</div>
+		<div class="card card-2" data-card="2">
+			<div class="side-a"></div>
+			<div class="side-b spades">6</div>
+		</div>
+		<div class="card card-3" data-card="3">
+			<div class="side-a"></div>
+			<div class="side-b clubs">Q</div>
+		</div>
+		<div class="card card-4" data-card="4">
+			<div class="side-a"></div>
+			<div class="side-b hearts">10</div>
+		</div>
+		<div class="card card-5" data-card="5">
+			<div class="side-a"></div>
+			<div class="side-b spades">2</div>
+		</div>
+	</div>
+	<div id="community" class="board">
+		<div class="card deck">
+			<div class="side-a"></div>
+			<div class="side-b diamonds">K</div>
+		</div>
+		<div class="card discard">
+			<div class="side-a"></div>
+			<div class="side-b hearts">3</div>
+		</div>
+		<div class="card deck-2">
+			<div class="side-a"></div>
+			<div class="side-b spades">8</div>
+		</div>
+		<div class="card discard-2">
+			<div class="side-a"></div>
+			<div class="side-b clubs">10</div>
+		</div>
+	</div>
+	<div id="options" class="board">
+		<button class="deal" value="deal" name="deal">Deal</button>
+		<button class="draw disabled" value="draw" name="draw">Draw</button>
+		<button class="scorecard" value="scorecard" name="scorecard">Scorecard</button>
+		<p class="info"> </p>
+	</div>
+</div>
+<div id="screen">
+<div id="modal" class="title-bg">
+	<div class="title-screen">
+		<div class="title">Golf</div>
+		<button class="new-game" value="new-game" name="new-game">New Game</button>
+		<button class="title-rules" value="title-rules" name="title-rules">Rules</button>
+	</div>
+	<div class="start-screen">
+		<div class="title">Enter Names</div>
+		<div>
+			<label>Player 1</label>
+			<input type="text" id="player1-name"></input>
+		</div>
+		<div>
+			<label>Player 2</label>
+			<input type="text" id="player2-name"></input>
+		</div>
+		<button class="start" value="start" name="start">Start</button>
+	</div>
+	<div class="score-screen">
+		<div id="player1-scorecard-name" class="player">Player 1</div>
+		<div id="player2-scorecard-name" class="player">Player 2</div>
+		<div id="scores">
+			<div id="player1-scores">
+			</div>
+			<div id="player2-scores">
+			</div>
+		</div>
+	</div>
+	<div class="settings-screen">
+		<div class="player">Settings</div>
+		<div class="option">Card Image</div>
+		<div id="image1" class="image"><img src="img/cardBack1.jpg" height="200" /></div>
+		<div id="image2" class="image"><img src="img/cardBack2.jpg" height="200" /></div>
+		<div id="image3" class="image"><img src="img/cardBack3.jpg" height="200" /></div>
+		<div id="image4" class="image"><img src="img/cardBack4.jpg" height="200" /></div>
+		<div id="image5" class="image"><img src="img/cardBack5.jpg" height="200" /></div>
+		<div id="image6" class="image"><img src="img/cardBack6.jpg" height="200" /></div>
+	</div>
+	<div class="instructions-screen">
+		<div class="title">How to Play</div>
+		<div class="instructions">
+			
+			<h3>Introduction</h3>
+			<p>
+				Golf is a card game in which the object is to score as little points as possible, as in the sport of Golf.  The game is played with a standard 52 card poker deck.  Each player is dealt 6 cards, arranged in a rectangle format with 3 columns of 2 cards.  Players attempt to improve their hands by taking turns drawing new cards to replace unwanted cards, which are discarded.
+			</p>
+			<h3>The Play</h3>
+			<p>
+				At the beginning of the game each player reveals 2 cards from their hand and play begins with the first player.  Each turn allows a player to draw from the top of the deck or discard pile and replace it with any card in their hand or they may decide to discard it.  If the player chooses to replace a drawn card with one that is face down, the card is revealed and automatically discarded.  Play alternates between the players until one player has replaced their last down card, at which point the opponent will get one final turn to play.  During this turn the discard pile is frozen, and the player must draw from the deck.  The player can decide to keep the drawn card, swapping it with any card from their hand, or the player can choose to discard it.  Once this decision is made all remaining face down cards are revealed and scored.
+			</p>
+			<h3>Scoring</h3>
+			<p>
+				Card values are as follows: Kings are 0, Jokers are -2 and all other cards are worth their face value with Jacks and Queens being worth 10 points.
+			</p>
+			<p>
+				When a player matches two cards of the same rank in a column they equal zero.  For example if a player has a Queen directly above another Queen this would be scored as 0 rather than 20, however if the player gets a Joker directly above another Joker this equates to -4 total points and adds a bonus 10 points the the opponents score.  There is another special condition for when a player has 4 of a kind with the cards positioned in two columns, also adding 10 points the the opponents score.
+			</p>
+			<h3>How to Win</h3>
+			<p>
+				If any player reaches or exceeds a total score of 50 the game ends, otherwise play continues with subsequent hands until a winner is determined.
+			</p>
+		</div>
+		<button class="back" value="back" name="back">Back</button>
+	</div>
+	<button class="reset" value="reset" name="reset">Reset</button>
+	<button class="settings" value="settings" name="settings">Settings</button>
+	<button class="rules" value="rules" name="rules">Rules</button>
+</div>
+</div>
+<div class="byline">Ryan Dantzler &copy; 2014</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+
+body {
+/*	-webkit-perspective: 800px;
+	-webkit-perspective-origin: 50% 100%;*/
+	-webkit-perspective: 960px;
+	-webkit-perspective-origin: 50% 30%;
+}
+
+.card {
+	/*transition: -webkit-transform 1.5s ease-in-out;*/
+	transition-property: -webkit-transform, z-index, top, left;
+	transition-duration: 1s, 0s, 1s, 1s;
+	transition-timing-function: ease-in-out;
+	-webkit-transform-style: preserve-3d;
+	-webkit-transform-origin: 50% 100%;
+}
+
+.card div {
+	position: absolute;
+	-webkit-backface-visibility: hidden;
+	-webkit-transform-origin: 50% 50%;
+	
+}
+
+.enabled .side-a {
+	transition-property: -webkit-transform, border-color;
+	transition-duration: 1s, .1s;
+}
+
+.side-a {
+	z-index: 100;
+}
+
+.card.active div:first-child {
+	-webkit-transform: none;
+}
+
+.side-b {
+	-webkit-transform: rotateY(-180deg);
+}
+
+/*.enabled:hover {
+	-webkit-transform: translateZ(30px);
+}*/
