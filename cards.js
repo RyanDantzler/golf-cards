@@ -93,7 +93,7 @@ var cards = function(){
       deck.splice(c, 1);
       _count--;
     } else {
-      console.log("There are no cards left to deal.")
+      console.log("There are no cards left to deal.");
     }
 
     return card;

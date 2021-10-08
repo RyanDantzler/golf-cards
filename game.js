@@ -95,6 +95,7 @@ var game = function() {
     $('.discard .side-b').attr('class', 'side-b ' + dealtCard.suit).text(dealtCard.identifier);
     $('#player1 .card, #player2 .card').addClass('enabled');
     $('.enabled').on('click', game.select);
+    $('.discard').css({'left': 0, 'top': 0});
 
     $('#options p').text(cards.count);
   };
@@ -218,10 +219,13 @@ var game = function() {
 
   var displayDraw = function() {
     var dealtCard = topCard;
+    if (cards.count() == 0)
+      $('.deck-2').css({'opacity': 0});
 
     $('.deck').attr('id', dealtCard.name).css({'-webkit-transform': 'rotateY(-.5turn)', 'z-index': 2}).addClass('enabled revealed selected'); 
     $('.deck .side-b').attr('class', 'side-b ' +  dealtCard.suit).text(dealtCard.identifier);
 
+    $('.deck').css({'left': 0, 'top': 0});
     $('.draw').off().addClass('disabled');
     selectCard('.deck .side-b');
     $('#options p').text(cards.count);
@@ -301,11 +305,11 @@ var game = function() {
       $selected = $('.selected');
       leftDiff = $targetLeft - $selected.offset().left;
       topDiff = $targetTop - $selected.offset().top;
-      $('.selected').css({'left': leftDiff, 'top': topDiff});
+      $('.selected').css({'z-index':3, 'left': leftDiff, 'top': topDiff});
 
       leftDiff = $('.discard').offset().left - $targetLeft;
       topDiff = $('.discard').offset().top - $targetTop;
-      $target.css({'left': leftDiff, 'top': topDiff});
+      $target.css({'z-index':4, 'left': leftDiff, 'top': topDiff});
 
       setTimeout(function() {
         $('.discard-2').attr('id', $discard.attr('id')).show();
@@ -314,7 +318,7 @@ var game = function() {
           '<div class="side-a"></div>' +
           '<div class="' + $target.children('.side-b').attr('class') + '">' + $target.children('.side-b').text() + '</div>' +
         '</div>').insertAfter($discard);
-        $('<div class="' + $target.attr('class') + '" id="' + $selected.attr('id') + '" data-card="' + $target.attr('data-card') + '" style="left: 0px; top: 0px; -webkit-transform: rotateY(-0.5turn); z-index: 2;">' +
+        $('<div class="' + $target.attr('class') + '" id="' + $selected.attr('id') + '" data-card="' + $target.attr('data-card') + '" style="left: 0px; top: 0px; -webkit-transform: rotateY(-0.5turn); z-index: 1;">' +
           '<div class="side-a"></div>' +
           '<div class="' + $selected.children('.side-b').attr('class') + '">' + $selected.children('.side-b').text() + '</div>' +
         '</div>').insertAfter($target);
@@ -354,7 +358,7 @@ var game = function() {
     $selected = $('.selected');
     leftDiff = $discardLeft - $selected.offset().left;
     topDiff = $discardTop - $selected.offset().top;
-    $('.selected').css({'left': leftDiff, 'top': topDiff, 'z-index': 50});
+    $('.selected').css({'left': leftDiff, 'top': topDiff, 'z-index': 5});
 
     setTimeout(function() {
       $('.discard-2').attr('id', $discard.attr('id')).show();
@@ -393,6 +397,7 @@ var game = function() {
         $('.discard').css({'-webkit-transform': 'rotateY(-.5turn)', 'z-index': 2}).addClass('enabled revealed');
         $('.draw').on('click', game.draw).removeClass('disabled');
         $('.discard').on('click', game.drawDiscard);
+        $('.card').css({'z-index': 1});
       }
 
       if (isCardsDealt && player1.revealed > 1 && player2.revealed > 1) {

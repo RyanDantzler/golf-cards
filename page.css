@@ -317,14 +317,19 @@ button {
 	margin-left: -376px;
 }
 
+.discard {
+	z-index: -1;
+}
+
 .discard-2 {
 	margin-left: -183px;
 	display: none;
-}
-
-#community {
 	z-index: -1;
 }
+
+/*#community {
+	z-index: -1;
+}*/
 .side-a {
 	background: #498FBC url('img/R-card-back-trans.png');
 	background-position: 50% 50%;
@@ -335,7 +340,7 @@ button {
 }
 .spades {
 	background: #33363B url('img/suits.png');
-	background-position: -13px -21px;
+	background-position: -13px -19px;
 	background-size: 341px 409px;
 }
 .hearts {
@@ -345,7 +350,7 @@ button {
 }
 .clubs {
 	background: #33363B url('img/suits.png');
-	background-position: -186px -224px;
+	background-position: -186px -222px;
 	background-size: 315px 406px;
 }
 .diamonds {
