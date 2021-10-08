@@ -313,6 +313,10 @@ button {
 	line-height: 200px;
 	border: 15px solid white;
 }
+.deck {
+	z-index: 3;
+}
+
 .deck-2 {
 	margin-left: -376px;
 }
@@ -365,61 +369,61 @@ button {
 
 #player1 .card-0 {
 	top: 538px;
-	z-index: 12;
+	z-index: 14;
 }
 #player1 .card-1 {
 	left: -193px;
 	top: 538px;
-	z-index: 10;
+	z-index: 12;
 }
 #player1 .card-2 {
 	left: -386px;
 	top: 538px;
-	z-index: 8;
+	z-index: 10;
 }
 #player1 .card-3 {
 	left: 0px;
 	top: 288px;
-	z-index: 6;
+	z-index: 8;
 }
 #player1 .card-4 {
 	left: -193px;
 	top: 288px;
-	z-index: 4;
+	z-index: 6;
 }
 #player1 .card-5 {
 	left: -386px;
 	top: 288px;
-	z-index: 2;
+	z-index: 4;
 }
 
 #player2 .card-0 {
 	left: -620px;
 	top: 538px;
-	z-index: 11;
+	z-index: 13;
 }
 #player2 .card-1 {
 	left: -813px;
 	top: 538px;
-	z-index: 9;
+	z-index: 11;
 }
 #player2 .card-2 {
 	left: -1006px;
 	top: 538px;
-	z-index: 7;
+	z-index: 9;
 }
 #player2 .card-3 {
 	left: -620px;
 	top: 288px;
-	z-index: 5;
+	z-index: 7;
 }
 #player2 .card-4 {
 	left: -813px;
 	top: 288px;
-	z-index: 3;
+	z-index: 5;
 }
 #player2 .card-5 {
 	left: -1006px;
 	top: 288px;
-	z-index: 1;
+	z-index: 3;
 }
