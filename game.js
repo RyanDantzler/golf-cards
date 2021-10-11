@@ -234,6 +234,7 @@ var game = function() {
     $('.deck').css({'left': 0, 'top': 0});
     $('.draw').off().addClass('disabled');
     selectCard('.deck');
+    $('.discard').addClass('enabled').on('click', game.select);
     $('#options p').text(cards.count);
   };
 
@@ -382,7 +383,7 @@ var game = function() {
 
   var selectCard = function(card) {
     isCardSelected = true;
-    $(card).css({'border-color': '#FFEC85'});
+    $(card).css({'border-color': '#FFEC85'}).removeClass('enabled');
     $('#' + activePlayer + ' .card').addClass('enabled');
     $('.card').off();
     $('.enabled').on('click', game.select);
@@ -573,13 +574,13 @@ var game = function() {
     if (player1.total > 49 || player2.total > 49) {
       $('.winner').remove();
       if (player1.total > player2.total) {
-        $('#scores').append("<span class='winner'>" + player2.name + " wins.</div>");
+        $('#screen').append("<span class='winner'>" + player2.name + " wins!</div>");
         $('#player1-scores > div:last-child').css({'color': '#BC4F49'});
       } else if (player1.total < player2.total) {
-        $('#scores').append("<span class='winner'>" + player1.name + " wins.</div>");
+        $('#screen').append("<span class='winner'>" + player1.name + " wins!</div>");
         $('#player2-scores > div:last-child').css({'color': '#BC4F49'});
       } else {
-        $('#scores').append("<span class='winner'>" + player1.name + " and " + player2.name + " tied.</div>");
+        $('#screen').append("<span class='winner'>It's a draw.</div>");
         $('#player1-scores > div:last-child').css({'color': '#BC4F49'});
         $('#player2-scores > div:last-child').css({'color': '#BC4F49'});
       }
@@ -710,7 +711,16 @@ $(document).ready(function() {
     $('.title-screen').fadeOut(300, function() {
       $('.back').hide();
       $('.instructions').css({'height': '512px'});
-      $('.start-screen').fadeIn();
+      $('.start-screen').fadeIn(function() {
+        $('#player1-name').focus();
+      });
+    });
+    $(document).on('keyup', function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        $('.start').trigger('click');
+        $(this).off();
+        }
     });
   });
 

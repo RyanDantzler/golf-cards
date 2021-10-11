@@ -1,5 +1,6 @@
 html {
 	height: 100%;
+	user-select: none;
 }
 body {
 	min-height: 100%;
@@ -11,6 +12,9 @@ body {
 #wrapper {
 	padding-top: 5px;
 	padding-left: 10px;
+	width: 1260px;
+	margin: 0 auto;
+	position: relative;
 }
 .info {
 	display: none;
@@ -18,7 +22,7 @@ body {
 #turn-indicator {
 	position:absolute;
 	display: none;
-	left: 600px;
+	left: 609px;
 	top: 275px;
 	-webkit-transition: 2s;
 	z-index: -100;
@@ -124,6 +128,15 @@ body {
 .start-screen, .score-screen, .settings-screen, .instructions-screen {
 	display: none;
 }
+.score-screen {
+	height:	100%;
+	background: linear-gradient(90deg,
+			rgba(0,0,0,0) calc(50% - 5px),
+			#eee calc(50% - 5px), 
+			#eee calc(50% + 5px),        
+			rgba(0,0,0,0) calc(50% + 5px)
+		);
+}
 #modal .settings-screen .option {
 	width: 100%;
 	font-size: 48px;
@@ -141,7 +154,7 @@ body {
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 	box-sizing: border-box;
-	border-bottom: 10px solid #eee;
+	border-bottom: 9px solid #eee;
 	font: bold 4em sans-serif;
 	padding: 0 0 14px 0;
 	color: #FFF;
@@ -149,16 +162,19 @@ body {
 	text-shadow: 0 1px rgba(0,0,0,.3);
 	float: left;
 }
-#modal #player1-scorecard-name {
-	border-right: 10px solid #eee;
-}
 #modal #scores {
 	width: 100%;
-	height: 80%;
+	height: calc(100% - 105px);
 	overflow-y: auto;
 }
 #modal .score {
 	width: 100%;
+}
+.winner {
+    font: bold 56px sans-serif;
+    color: #FFF;
+    text-align: center;
+    text-shadow: 0 1px rgb(0 0 0 / 30%);
 }
 .board {
 	position: relative;
@@ -313,6 +329,13 @@ button {
 	line-height: 200px;
 	border: 15px solid white;
 }
+
+.card:hover {
+	cursor: auto;
+}
+.card.enabled:hover {
+	cursor: pointer;
+}
 .deck {
 	z-index: 3;
 }
@@ -331,9 +354,10 @@ button {
 	z-index: -1;
 }
 
-/*#community {
-	z-index: -1;
-}*/
+#community {
+	width: 390px;
+	clear: left;
+}
 .side-a {
 	background: #498FBC url('img/R-card-back-trans.png');
 	background-position: 50% 50%;
