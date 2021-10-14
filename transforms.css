@@ -18,8 +18,11 @@ body {
 .card div {
 	position: absolute;
 	-webkit-backface-visibility: hidden;
-	-webkit-transform-origin: 50% 50%;
-	
+	-webkit-transform-origin: 50% 50%;	
+}
+
+.discard-2 {
+	-webkit-transform: rotateY(-.5turn);
 }
 
 .enabled .side-a {

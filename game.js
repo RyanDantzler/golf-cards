@@ -1,6 +1,6 @@
 var game = function() {
   var player1 = {
-    name: "Player1",
+    name: "Player 1",
     score: 0,
     total: 0,
     hand: [],
@@ -8,7 +8,7 @@ var game = function() {
     revealed: 0
   },
   player2 = {
-    name: "Player2",
+    name: "Player 2",
     score: 0,
     total: 0,
     hand: [],
@@ -260,7 +260,7 @@ var game = function() {
               discardPile[0] = swappedCard;
               console.log(discardPile);
               console.log(swappedCard);
-              displaySwap(pos);
+              displaySwap(pos, false);
               checkStatus();
           } else {
             console.log(activePlayer + " must swap or discard the " + topCard.name + " to end their turn.");
@@ -290,7 +290,7 @@ var game = function() {
       player.hand[pos].visible = true;
       topCard = null;
 
-      displaySwap(pos);
+      displaySwap(pos, true);
 
       discardCard(swappedCard);
       isCardDrawn = false;
@@ -299,7 +299,7 @@ var game = function() {
     }
   };
 
-  var displaySwap = function(pos) {
+  var displaySwap = function(pos, updateDiscard2) {
     var $discard = $('.discard'),
       $deck2 = $('.deck-2'),
       $target = $('#' + activePlayer + ' .card-' + pos),
@@ -318,8 +318,10 @@ var game = function() {
     $target.css({'z-index':4, 'left': leftDiff, 'top': topDiff});
 
     setTimeout(function() {
-      $('.discard-2').attr('id', $discard.attr('id')).show();
-      $('.discard-2 .side-b').attr('class', $discard.children('.side-b').attr('class')).text($discard.children('.side-b').text());
+      if(updateDiscard2) {
+        $('.discard-2').attr('id', $discard.attr('id')).show();
+        $('.discard-2 .side-b').attr('class', $discard.children('.side-b').attr('class')).text($discard.children('.side-b').text());
+      }
       $('<div class="card discard enabled revealed" id="' + $target.attr('id') + '" style="left: 0px; top: 0px; -webkit-transform: rotateY(-0.5turn); z-index: 2;">' +
         '<div class="side-a"></div>' +
         '<div class="' + $target.children('.side-b').attr('class') + '">' + $target.children('.side-b').text() + '</div>' +
@@ -447,7 +449,7 @@ var game = function() {
 
   var gameReset = function() {
     player1 = {
-      name: "Player1",
+      name: "Player 1",
       score: 0,
       total: 0,
       hand: [],
@@ -455,7 +457,7 @@ var game = function() {
       revealed: 0
     };
     player2 = {
-      name: "Player2",
+      name: "Player 2",
       score: 0,
       total: 0,
       hand: [],
@@ -668,7 +670,7 @@ $(document).ready(function() {
       document.body.style.zoom = "100%";
   });
 
-  $('.reset').hide();
+  $('.shuffle').hide();
   $('.settings').hide();
   $('.rules').hide();
 
@@ -748,7 +750,7 @@ $(document).ready(function() {
       $('#modal').removeClass('title-bg');
       $('.start-screen').hide();
       $('.score-card').show();
-      $('.reset').show();
+      $('.shuffle').show();
       $('.settings').show();
       $('.rules').show();
     });
@@ -828,7 +830,7 @@ $(document).ready(function() {
 
   $('.deal').on('click', game.deal);
 
-  $('.reset').on('click', function() {
+  $('.shuffle').on('click', function() {
     $('#wrapper').replaceWith(boardClones[roundCounter]);
     game.advance();
     $('.scorecard').on('click', function() {

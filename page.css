@@ -5,7 +5,6 @@ html {
 body {
 	min-height: 100%;
 	margin: 0;
-	/*background: #F7F7F7;*/
 	background: #E7E7E7;
 	overflow: hidden;
 }
@@ -14,7 +13,7 @@ body {
 	padding-left: 10px;
 	width: 1260px;
 	margin: 0 auto;
-	position: relative;
+    position: relative;
 }
 .info {
 	display: none;
@@ -110,10 +109,11 @@ body {
 .byline {
 	position: absolute;
 	right: 30px;
-	bottom: 0;
+	bottom: -15px;
 	margin: 10px 0 40px 0;
-	color: white;
-	font: bold sans-serif;
+	color: rgba(255,255,255,.4);
+	font: bold 1em sans-serif;
+	text-shadow: 1px 1px 4px rgb(0 0 0 / 30%);
 	z-index: 5000;
 }
 #modal .start-screen input {
@@ -194,7 +194,7 @@ body {
 	text-shadow: 0 1px rgba(0,0,0,.3);
 	float: right;
 }
-.deal, .draw, .scorecard, .reset, .settings, .start, .rules, .new-game, .title-rules, .back {
+.deal, .draw, .scorecard, .shuffle, .settings, .start, .rules, .new-game, .title-rules, .back {
 	width: 200px;
 	height: 100px;
 	margin: 0 15px;
@@ -240,7 +240,7 @@ body {
 	width: 430px;
 	margin-top: 20px;
 }
-.reset {
+.shuffle {
 	width: 275px;
 	position: absolute;
 	top: 30px;
@@ -262,19 +262,19 @@ body {
 	float: none;
 	margin-top: 50px;
 }
-.deal:hover, .draw:hover, .scorecard:hover, .reset:hover, .settings:hover, .start:hover, .rules:hover, .new-game:hover, .title-rules:hover, .back:hover  {
+.deal:hover, .draw:hover, .scorecard:hover, .shuffle:hover, .settings:hover, .start:hover, .rules:hover, .new-game:hover, .title-rules:hover, .back:hover  {
 	background: #BC4F49;
 	color: #CCC;
 	cursor: pointer;
 }
-.deal:active, .draw:active, .scorecard:active, .reset:active, .settings:active, .start:active, .rules:active, .new-game:active, .title-rules:active, .back:active  {
+.deal:active, .draw:active, .scorecard:active, .shuffle:active, .settings:active, .start:active, .rules:active, .new-game:active, .title-rules:active, .back:active  {
 	/*margin-top: 0px;*/
 	width: 196px;
 	height: 98px;
 	margin-right: 19px;
 	box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 8px 15px -10px rgba(0,0,0,.4);
 }
-.reset:active, .settings:active, .rules:active {
+.shuffle:active, .settings:active, .rules:active {
 	width: 268px;
 }
 .new-game:active {
