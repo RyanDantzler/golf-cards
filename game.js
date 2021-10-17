@@ -101,7 +101,10 @@ var game = function() {
     $('#player1 .card, #player2 .card').addClass('enabled');
     $('.enabled').on('click', game.select);
     $('.deck').on('click', game.draw);
-    $('.discard').css({'left': 0, 'top': 0});
+
+    // setTimeout(function() {
+    //   $('.discard').css({'left': 0, 'top': 0});
+    // },1900);
 
     $('#options p').text(cards.count);
   };
@@ -403,11 +406,17 @@ var game = function() {
       }
       if (isCardsDealt && !$('#player1 .card, #player2 .card').hasClass('enabled')) {
         gameStage = "midgame";
-        $('.discard').css({'-webkit-transform': 'rotateY(-.5turn)', 'z-index': 2}).addClass('enabled revealed');
-        $('.draw').on('click', game.draw).removeClass('disabled');
-        $('.discard').on('click', game.drawDiscard);
-        $('.card').css({'z-index': 1});
-        $('.deck').addClass('enabled').css({'z-index': 3});
+
+        setTimeout(function() {
+          $('.discard').css({'-webkit-transform': 'rotateY(.5turn)', 'left': 0, 'top': 0}).addClass('enabled revealed');
+        },600);
+
+        setTimeout(function() {
+          $('.draw').on('click', game.draw).removeClass('disabled');
+          $('.discard').on('click', game.drawDiscard).css({'z-index': 2});
+          $('.card').css({'z-index': 1});
+          $('.deck').addClass('enabled').css({'z-index': 3});
+        },1200);
       }
 
       if (isCardsDealt && player1.revealed > 1 && player2.revealed > 1) {

@@ -5,7 +5,9 @@ html {
 body {
 	min-height: 100%;
 	margin: 0;
-	background: #E7E7E7;
+	background: #E7E7E7 url(img/felt.jpg);
+	background-size: 100%;
+	background-position: center;
 	overflow: hidden;
 }
 #wrapper {
@@ -13,7 +15,10 @@ body {
 	padding-left: 10px;
 	width: 1260px;
 	margin: 0 auto;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
 }
 .info {
 	display: none;
@@ -188,6 +193,10 @@ body {
 .board:last-child {
 	float: right;
 }
+#options {
+	width: 540px;
+    margin-top: 12px;
+}
 #options p {
 	font: bold 5em sans-serif;
 	color: #FFF;
@@ -345,7 +354,8 @@ button {
 }
 
 .discard {
-	z-index: -1;
+	left: -193px;
+	z-index: 4;
 }
 
 .discard-2 {
@@ -393,61 +403,61 @@ button {
 
 #player1 .card-0 {
 	top: 538px;
-	z-index: 14;
+	z-index: 16;
 }
 #player1 .card-1 {
 	left: -193px;
 	top: 538px;
-	z-index: 12;
+	z-index: 14;
 }
 #player1 .card-2 {
 	left: -386px;
 	top: 538px;
-	z-index: 10;
+	z-index: 12;
 }
 #player1 .card-3 {
 	left: 0px;
 	top: 288px;
-	z-index: 8;
+	z-index: 10;
 }
 #player1 .card-4 {
 	left: -193px;
 	top: 288px;
-	z-index: 6;
+	z-index: 8;
 }
 #player1 .card-5 {
 	left: -386px;
 	top: 288px;
-	z-index: 4;
+	z-index: 6;
 }
 
 #player2 .card-0 {
 	left: -620px;
 	top: 538px;
-	z-index: 13;
+	z-index: 15;
 }
 #player2 .card-1 {
 	left: -813px;
 	top: 538px;
-	z-index: 11;
+	z-index: 13;
 }
 #player2 .card-2 {
 	left: -1006px;
 	top: 538px;
-	z-index: 9;
+	z-index: 11;
 }
 #player2 .card-3 {
 	left: -620px;
 	top: 288px;
-	z-index: 7;
+	z-index: 9;
 }
 #player2 .card-4 {
 	left: -813px;
 	top: 288px;
-	z-index: 5;
+	z-index: 7;
 }
 #player2 .card-5 {
 	left: -1006px;
 	top: 288px;
-	z-index: 3;
+	z-index: 5;
 }
