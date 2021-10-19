@@ -20,7 +20,6 @@ var game = function() {
   round = 1,
   activePlayer = "",
   gameStage = "pregame",
-  isCardSelected = false,
   isCardsDealt = false,
   isGameOver = false,
   isDiscardEnabled = true,
@@ -39,35 +38,42 @@ var game = function() {
     activePlayer = player1.isDealer ? "player2" : "player1";
   };
 
-  var cardClick = function() {
+  var playerCardClick = function() {
     var $this = $(this),
+    $selected = $('.selected'),
     position = $this.attr('data-card'),
     playerNum = $this.parents('#player1').attr('id') == "player1" ? 1 : 2,
-    player = playerNum == 1 ? player1 : player2,
-    $selected,
-    $discard = $('.discard'),
-    $deck2 = $('.deck-2'),
-    $thisLeft = $this.offset().left,
-    $thisTop = $this.offset().top,
-    leftDiff = 0,
-    topDiff = 0;
+    player = playerNum == 1 ? player1 : player2;
 
-      if (isCardDrawn) {
-        if (position)
-          swapCard(position);
-        else
-          discardCard();
-
-      } else if (isCardSelected) {
-        if ($this.hasClass('deck')) {
-          unselectCard($discard)
-          drawCard();
-        }
-        else
-          drawDiscard(position);
-      } else if (!player.hand[position].visible) {
+      if ($selected.hasClass('deck')) {
+        swapCard(position);
+      } else if ($selected.hasClass('discard')) {
+        drawDiscard(position);
+      } else if (gameStage == "pregame" && !player.hand[position].visible) {
         revealCard(playerNum, position, $this);
       }
+  };
+
+  var deckClick = function () {
+    if (gameStage !== "pregame") {
+      if (!isCardDrawn) {
+        unselectCard($('.discard'));
+        drawDeck();
+      }
+      else {
+        console.log(activePlayer + " must swap or discard the " + topCard.name + " to end their turn.");
+      }
+    } else {
+      console.log("Each player must reveal 2 cards before play begins.");
+    }
+  };
+
+  var discardClick = function () {
+    if (isCardDrawn) {
+      discardCard();
+    } else if (gameStage !== "endgame" && !$('.discard').hasClass('.selected')) {
+      selectCard($('.discard'));
+    }
   };
 
   var displayCards = function() {
@@ -75,38 +81,26 @@ var game = function() {
 
     (function dealPlayer1 (i) {
       setTimeout(function () {
-        dealtCard = player1.hand[i].card;
-        $('#player1 .card-' + i).attr('id', dealtCard.name);
-        $('#player1 .card-' + i + ' .side-b').attr('class', 'side-b ' + dealtCard.suit).text(dealtCard.identifier);
+        $('#player1 .card-' + i).attr('id', player1.hand[i].card.name);
+        $('#player1 .card-' + i + ' .side-b').attr('class', 'side-b ' + player1.hand[i].card.suit).text(player1.hand[i].card.identifier);
         $('#player1 .card-' + i).css({'left': '0', 'top': '0'});
         if (++i < 6) {dealPlayer1(i);}
       }, 300)
-      $('#options p').text(cards.count);
     })(0);
 
     (function dealPlayer2 (i) {
       setTimeout(function () {
-        dealtCard = player2.hand[i].card;
-        $('#player2 .card-' + i).attr('id', dealtCard.name);
-        $('#player2 .card-' + i + ' .side-b').attr('class', 'side-b ' + dealtCard.suit).text(dealtCard.identifier);
+        $('#player2 .card-' + i).attr('id', player2.hand[i].card.name);
+        $('#player2 .card-' + i + ' .side-b').attr('class', 'side-b ' + player2.hand[i].card.suit).text(player2.hand[i].card.identifier);
         $('#player2 .card-' + i).css({'left': '0', 'top': '0'});
         if (++i < 6) {dealPlayer2(i);}
       }, 300)
-      $('#options p').text(cards.count);
     })(0);
 
-    dealtCard = discardPile[0];
-    $('.discard').attr('id', dealtCard.name);
-    $('.discard .side-b').attr('class', 'side-b ' + dealtCard.suit).text(dealtCard.identifier);
-    $('#player1 .card, #player2 .card').addClass('enabled');
-    $('.enabled').on('click', game.select);
-    $('.deck').on('click', game.draw);
-
-    // setTimeout(function() {
-    //   $('.discard').css({'left': 0, 'top': 0});
-    // },1900);
-
-    $('#options p').text(cards.count);
+    $('.discard').attr('id', discardPile[0].name);
+    $('.discard .side-b').attr('class', 'side-b ' + discardPile[0].suit).text(discardPile[0].identifier);
+    $('#player1 .card, #player2 .card').addClass('enabled').on('click', game.selectCard);
+    $('.deck').on('click', deckClick);
   };
 
   var dealCards = function() {
@@ -133,7 +127,7 @@ var game = function() {
 
     isCardsDealt = true;
 
-    discardPile[0] = cards.deal();
+    discardPile.push(cards.deal());
     console.log("\ndiscard pile", discardPile[0].name);
 
     console.log("Choose two cards to reveal.");
@@ -208,37 +202,26 @@ var game = function() {
     $this.css({'-webkit-transform': 'rotateY(-.5turn)', 'z-index': 2}).addClass('revealed');
   };
 
-  var drawCard = function() {
-    if (gameStage !== "pregame") {
-      if (!isCardDrawn){
+  var drawDeck = function() {
+    topCard = cards.deal();
+    isCardDrawn = true;
+    displayDrawDeck(topCard);
 
-        topCard = cards.deal();
-        console.log("\ntop card", topCard.name);
-        isCardDrawn = true;
-        displayDraw();
-
-        console.log(activePlayer + " swap or discard the " + topCard.name + ".");
-      } else {
-        console.log(activePlayer + " must swap or discard the " + topCard.name + " to end their turn.");
-      }
-    } else {
-      console.log("Each player must reveal 2 cards before play begins.");
-    }
+    console.log("\ntop card", topCard.name);
+    console.log(activePlayer + " swap or discard the " + topCard.name + ".");
   };
 
-  var displayDraw = function() {
-    var dealtCard = topCard;
+  var displayDrawDeck = function(card) {
+    var $deck = $('.deck');
     if (cards.count() == 0)
       $('.deck-2').css({'opacity': 0});
 
-    $('.deck').attr('id', dealtCard.name).css({'-webkit-transform': 'rotateY(-.5turn)', 'z-index': 3}).addClass('revealed selected'); 
-    $('.deck .side-b').attr('class', 'side-b ' +  dealtCard.suit).text(dealtCard.identifier);
+    selectCard($deck);
+    $('.deck .side-b').attr('class', 'side-b ' +  card.suit).text(card.identifier);
+    $deck.attr('id', card.name).css({'-webkit-transform': 'rotateY(-.5turn)', 'z-index': 3, 'left': 0, 'top': 0}).addClass('revealed'); 
 
-    $('.deck').css({'left': 0, 'top': 0});
     $('.draw').off().addClass('disabled');
-    selectCard('.deck');
-    $('.discard').addClass('enabled').on('click', game.select);
-    $('#options p').text(cards.count);
+    $('.discard').addClass('enabled').on('click', discardClick);
   };
 
   var drawDiscard = function(pos) {
@@ -258,12 +241,12 @@ var game = function() {
               }
 
               console.log(swappedCard);
-              player.hand[pos].card = discardPile[0];
+              player.hand[pos].card = discardPile[discardPile.length - 1];
               player.hand[pos].visible = true;
-              discardPile[0] = swappedCard;
+              discardPile[discardPile.length - 1] = swappedCard;
               console.log(discardPile);
               console.log(swappedCard);
-              displaySwap(pos, false);
+              displaySwap(pos, false, false);
               checkStatus();
           } else {
             console.log(activePlayer + " must swap or discard the " + topCard.name + " to end their turn.");
@@ -272,8 +255,7 @@ var game = function() {
       }
     } else if (gameStage !== "endgame") {
       $('.draw').off().addClass('disabled');
-      selectCard('.discard');
-      $('.discard').addClass('selected');
+      selectCard($('.discard'));
     } else {
       console.log("You cannot draw from the discard pile on the last turn.")
     }
@@ -291,34 +273,24 @@ var game = function() {
 
       player.hand[pos].card = topCard;
       player.hand[pos].visible = true;
-      topCard = null;
 
-      displaySwap(pos, true);
-
+      displaySwap(pos, true, gameStage == "endgame");
       discardCard(swappedCard);
-      isCardDrawn = false;
     } else {
       console.log("Draw a card from the deck or the discard pile.");
     }
   };
 
-  var displaySwap = function(pos, updateDiscard2) {
+  var displaySwap = function(pos, updateDiscard2, freezeDeck) {
     var $discard = $('.discard'),
-      $deck2 = $('.deck-2'),
+      $selected = $('.selected'),
       $target = $('#' + activePlayer + ' .card-' + pos),
       $targetLeft = $target.offset().left,
-      $targetTop = $target.offset().top,
-      leftDiff = 0,
-      topDiff = 0;
+      $targetTop = $target.offset().top;
 
-    $selected = $('.selected');
-    leftDiff = $targetLeft - $selected.offset().left;
-    topDiff = $targetTop - $selected.offset().top;
-    $('.selected').css({'z-index':3, 'left': leftDiff, 'top': topDiff});
+    $('.selected').css({'z-index': 3, 'left': $targetLeft - $selected.offset().left, 'top': $targetTop - $selected.offset().top});
 
-    leftDiff = $('.discard').offset().left - $targetLeft;
-    topDiff = $('.discard').offset().top - $targetTop;
-    $target.css({'z-index':4, 'left': leftDiff, 'top': topDiff});
+    $target.css({'z-index': 4, 'left': $discard.offset().left - $targetLeft, 'top': $discard.offset().top - $targetTop});
 
     setTimeout(function() {
       if(updateDiscard2) {
@@ -336,40 +308,39 @@ var game = function() {
       $target.remove();
       $discard.remove();
       $('.deck').remove();
-      $deck2.clone().attr('class', 'card deck enabled').css({'z-index': 3}).insertBefore('.discard');
-      $('.deck').on('click', game.draw);
-      $('.discard').on('click', game.drawDiscard);
+      $('.deck-2').clone().attr('class', 'card deck enabled').css({'z-index': 3}).insertBefore('.discard');
+
+      if (gameStage == "endgame") {
+        $('.discard').removeClass('enabled');
+      }
+
+      if (!freezeDeck) {
+        $('.deck').on('click', deckClick);
+        $('.discard').on('click', discardClick);
+      } else {
+        $('.deck').removeClass('enabled');
+      }
     }, 1200);
   };
 
   var discardCard = function(card) {
-    discardPile[1] = discardPile[0];
-
     if (card)
-      discardPile[0] = card;
+      discardPile.push(card);
     else {
-      discardPile[0] = topCard;
+      discardPile.push(topCard);
       displayDiscard();
     }
 
     topCard = null;
-
     isCardDrawn = false;
     checkStatus();
   };
 
   var displayDiscard = function() {
     var $discard = $('.discard'),
-      $deck2 = $('.deck-2'),
-      $discardLeft = $discard.offset().left,
-      $discardTop = $discard.offset().top,
-      leftDiff = 0,
-      topDiff = 0;
+      $selected = $('.selected');
 
-    $selected = $('.selected');
-    leftDiff = $discardLeft - $selected.offset().left;
-    topDiff = $discardTop - $selected.offset().top;
-    $('.selected').css({'left': leftDiff, 'top': topDiff, 'z-index': 5});
+    $('.selected').css({'left': $discard.offset().left - $selected.offset().left, 'top': $discard.offset().top - $selected.offset().top, 'z-index': 5});
 
     setTimeout(function() {
       $('.discard-2').attr('id', $discard.attr('id')).show();
@@ -380,23 +351,26 @@ var game = function() {
       '</div>').insertAfter($discard);
       $discard.remove();
       $('.deck').remove();
-      $deck2.clone().attr('class', 'card deck enabled').css({'z-index': 3}).insertBefore('.discard');
-      $('.deck').on('click', game.draw);
-      $('.discard').on('click', game.drawDiscard);
+      $('.deck-2').clone().attr('class', 'card deck enabled').css({'z-index': 3}).insertBefore('.discard');
+
+      if (gameStage == "endgame") {
+        $('.discard, .deck').removeClass('enabled');
+      } else {
+        $('.deck').on('click', deckClick);
+        $('.discard').on('click', discardClick);
+      }
     }, 1200);
   };
 
-  var selectCard = function(card) {
-    isCardSelected = true;
-    $(card).css({'border-color': '#FFEC85'}).removeClass('enabled');
+  var selectCard = function($card) {
+    $card.css({'border-color': '#FFEC85'}).addClass('selected').removeClass('enabled');
     $('#' + activePlayer + ' .card').addClass('enabled');
-    $('.card').off();
-    $('.enabled').on('click', game.select);
+    $('#player1 .card, #player2 .card').off();
+    $('#' + activePlayer + ' .card').on('click', game.selectCard);
   };
 
-  var unselectCard = function(card) {
-    isCardSelected = false;
-    $(card).css({'border-color': ''}).removeClass('selected');
+  var unselectCard = function($card) {
+    $card.css({'border-color': ''}).removeClass('selected');
   };
 
   var checkStatus = function($this) {
@@ -404,7 +378,7 @@ var game = function() {
       if ($this.siblings().hasClass('revealed')) {
         $this.siblings().addBack().removeClass('enabled');
       }
-      if (isCardsDealt && !$('#player1 .card, #player2 .card').hasClass('enabled')) {
+      if (isCardsDealt && player1.revealed > 1 && player2.revealed > 1) {
         gameStage = "midgame";
 
         setTimeout(function() {
@@ -412,36 +386,33 @@ var game = function() {
         },600);
 
         setTimeout(function() {
-          $('.draw').on('click', game.draw).removeClass('disabled');
-          $('.discard').on('click', game.drawDiscard).css({'z-index': 2});
+          $('.draw').on('click', deckClick).removeClass('disabled');
+          $('.discard').on('click', discardClick).css({'z-index': 2});
           $('.card').css({'z-index': 1});
           $('.deck').addClass('enabled').css({'z-index': 3});
         },1200);
-      }
 
-      if (isCardsDealt && player1.revealed > 1 && player2.revealed > 1) {
-        gameStage = "midgame";
         $('#turn-indicator').removeClass('player1 player2').addClass(activePlayer).show();
       }
     } else if (gameStage == "midgame" && cards.count() > 0) {
-
       if (player1.revealed == 6 || player2.revealed == 6) {
         gameStage = "endgame";
         isDiscardEnabled = false;
         playerToBeat = activePlayer;
         console.log("endgame");
       }
-      isCardSelected = false;
+
       $('.enabled').removeClass('enabled');
-      // $('.deck').addClass('enabled').css({'z-index': 2});
       activePlayer = activePlayer == "player1" ? "player2" : "player1";
       $('#turn-indicator').removeClass('player1 player2').addClass(activePlayer);
       console.log(activePlayer + "'s turn.");
-      $('.draw').on('click', game.draw).removeClass('disabled');
+      $('.draw').on('click', deckClick).removeClass('disabled');
     } else {
       console.log("The game is over.");
+      $('.card').off().removeClass('enabled');
       revealHidden();
       calcScores();
+      displayScores();
     }
   };
 
@@ -478,7 +449,6 @@ var game = function() {
     round = 1;
     activePlayer = "";
     gameStage = "pregame";
-    isCardSelected = false;
     isCardsDealt = false;
     isGameOver = false;
     isDiscardEnabled = true;
@@ -502,7 +472,6 @@ var game = function() {
     round++;
     activePlayer = "";
     gameStage = "pregame";
-    isCardSelected = false;
     isCardsDealt = false;
     isGameOver = false;
     isDiscardEnabled = true;
@@ -578,7 +547,9 @@ var game = function() {
     console.log("player 2: " + player2.score);
     player1.total += player1.score;
     player2.total += player2.score;
+  };
 
+  var displayScores = function() {
     $('#player1-scores').append("<div class='score'>" + player1.total + "</div>");
     $('#player2-scores').append("<div class='score'>" + player2.total + "</div>");
 
@@ -608,7 +579,6 @@ var game = function() {
     console.log("player2.isDealer = " + player2.isDealer);
     console.log("activePlayer = " + activePlayer);
     console.log("round = " + round);
-    console.log("isCardSelected = " + isCardSelected);
     console.log("isCardDrawn = " + isCardDrawn);
     console.log("isCardsDealt = " + isCardsDealt);
 
@@ -621,8 +591,8 @@ var game = function() {
       console.log(i + " " + player2.hand[i].card.name + " " + player2.hand[i].visible);
     };
     if (topCard)
-    console.log("\ntop card", topCard.name);
-    console.log("\ndiscard pile", discardPile[0].name);
+      console.log("\ntop card", topCard.name);
+    console.log("\ndiscard pile", discardPile[discardPile.length - 1].name);
   };
 
   var debounce = function(fn, threshold, execAsap){
@@ -648,12 +618,12 @@ var game = function() {
 
   return {
     start: gameStart,
-    select: cardClick,
+    selectCard: playerCardClick,
     deal: dealCards,
     display: displayCards,
     reveal: revealCard,
     random: revealRandomCard,
-    draw: drawCard,
+    drawDeck: drawDeck,
     drawDiscard: drawDiscard,
     swap: swapCard,
     discarded: discardCard,
