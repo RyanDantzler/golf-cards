@@ -203,7 +203,7 @@ body {
 	text-shadow: 0 1px rgba(0,0,0,.3);
 	float: right;
 }
-.deal, .draw, .scorecard, .shuffle, .settings, .start, .rules, .new-game, .title-rules, .back {
+.deal, .draw, .scorecard, .reset, .shuffle, .settings, .start, .rules, .new-game, .title-rules, .back {
 	width: 200px;
 	height: 100px;
 	margin: 0 15px;
@@ -249,39 +249,52 @@ body {
 	width: 430px;
 	margin-top: 20px;
 }
+.reset {
+	width: 325px;
+	position: absolute;
+	top: 30px;
+	right: 10px;
+	display: none;
+}
 .shuffle {
 	width: 275px;
 	position: absolute;
 	top: 30px;
 	right: 10px;
+	display: none;
 }
 .settings {
 	width: 275px;
 	position: absolute;
 	top: 150px;
 	right: 10px;
+	display: none;
 }
 .rules {
 	width: 275px;
 	position: absolute;
 	top: 270px;
 	right: 10px;
+	display: none;
 }
 .start {
 	float: none;
 	margin-top: 50px;
 }
-.deal:hover, .draw:hover, .scorecard:hover, .shuffle:hover, .settings:hover, .start:hover, .rules:hover, .new-game:hover, .title-rules:hover, .back:hover  {
+.deal:hover, .draw:hover, .scorecard:hover, .reset:hover, .shuffle:hover, .settings:hover, .start:hover, .rules:hover, .new-game:hover, .title-rules:hover, .back:hover  {
 	background: #BC4F49;
 	color: #CCC;
 	cursor: pointer;
 }
-.deal:active, .draw:active, .scorecard:active, .shuffle:active, .settings:active, .start:active, .rules:active, .new-game:active, .title-rules:active, .back:active  {
+.deal:active, .draw:active, .scorecard:active, .reset:active, .shuffle:active, .settings:active, .start:active, .rules:active, .new-game:active, .title-rules:active, .back:active  {
 	/*margin-top: 0px;*/
 	width: 196px;
 	height: 98px;
 	margin-right: 19px;
 	box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 8px 15px -10px rgba(0,0,0,.4);
+}
+.reset:active {
+	width:  318px;
 }
 .shuffle:active, .settings:active, .rules:active {
 	width: 268px;
@@ -333,7 +346,6 @@ button {
 	box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
 	color: #FFF;
 	text-align: center;
-	/*text-shadow: 0 1px rgba(0,0,0,.3);*/
 	font: bold 6em sans-serif;
 	line-height: 200px;
 	border: 15px solid white;
@@ -372,9 +384,32 @@ button {
 	background: #498FBC url('img/R-card-back-trans.png');
 	background-position: 50% 50%;
 	background-size: 90px;
+	background-repeat: none;
+	background-blend-mode: normal;
+}
+.card-back1 .side-a {
+	background: #f8f8f9 url('img/A-card-back.png');
+	background-position: center;
+	background-size: 102% 101%;
+}
+.card-back2 .side-a {
+	background: #f8f8f9 url('img/B-card-back.png');
+	background-position: center;
+	background-size: 101% 101%;
+}
+.card-back3 .side-a {
+	background: #f8f8f9 url('img/C-card-back.png');
+	background-position: center;
+	background-size: 101% 101%;
+}
+.card-back4 .side-a {
+	background: #f8f8f9 url('img/B-card-back.png');
+	background-position: center;
+	background-size: 101% 101%;
+	background-blend-mode: luminosity;
 }
 .side-b {
-	background: #E7E7E7;
+	background: #DDDDDD;
 }
 .spades {
 	background: #33363B url('img/suits.png');
@@ -398,7 +433,7 @@ button {
 }
 
 .enabled:hover .side-a, .enabled:hover .side-b, .selected .side-b {
-	border-color: #FFEC85 !important;
+	border: 15px solid #FFEC85 !important;
 }
 
 #player1 .card-0 {

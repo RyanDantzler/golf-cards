@@ -410,6 +410,7 @@ var game = function() {
     } else {
       console.log("The game is over.");
       $('.card').off().removeClass('enabled');
+      $('.draw').off().addClass('disabled');
       revealHidden();
       calcScores();
       displayScores();
@@ -428,22 +429,14 @@ var game = function() {
   };
 
   var gameReset = function() {
-    player1 = {
-      name: "Player 1",
-      score: 0,
-      total: 0,
-      hand: [],
-      isDealer: false,
-      revealed: 0
-    };
-    player2 = {
-      name: "Player 2",
-      score: 0,
-      total: 0,
-      hand: [],
-      isDealer: true,
-      revealed: 0
-    };
+    player1.score = 0;
+    player1.total = 0;
+    player1.hand = [];
+    player1.revealed = 0;
+    player2.score = 0;
+    player2.total = 0;
+    player2.hand = [];
+    player2.revealed = 0;
     discardPile = [];
     topCard = null;
     round = 1;
@@ -454,10 +447,6 @@ var game = function() {
     isDiscardEnabled = true;
     isCardDrawn = false;
     playerToBeat = null;
-
-    $('.deal').on('click', game.deal).removeClass('disabled');
-    gameStart();
-    resetBoard();
   };
 
   var advanceRound = function() {
@@ -477,8 +466,6 @@ var game = function() {
     isDiscardEnabled = true;
     isCardDrawn = false;
     playerToBeat = null;
-
-    gameStart();
   };
 
   var calcScores = function() {
@@ -547,6 +534,9 @@ var game = function() {
     console.log("player 2: " + player2.score);
     player1.total += player1.score;
     player2.total += player2.score;
+
+    if (player1.total > 49 || player2.total > 49)
+      isGameOver = true;
   };
 
   var displayScores = function() {
@@ -566,6 +556,9 @@ var game = function() {
         $('#player1-scores > div:last-child').css({'color': '#BC4F49'});
         $('#player2-scores > div:last-child').css({'color': '#BC4F49'});
       }
+
+      $('.shuffle').hide();
+      $('.reset').show();
     }
 
     $('#screen').delay(1800).fadeIn(500);
@@ -636,9 +629,6 @@ var game = function() {
 }();
 
 $(document).ready(function() {
-  var boardClones = [],
-  roundCounter = 0;
-
   if ($(window).height() < 860)
       document.body.style.zoom = "80%";
 
@@ -649,20 +639,28 @@ $(document).ready(function() {
       document.body.style.zoom = "100%";
   });
 
-  $('.shuffle').hide();
-  $('.settings').hide();
-  $('.rules').hide();
+  var boardHtml = $('#wrapper').html();
 
-  for (var i = 0; i < 20; i++) {
-    boardClones[i] = $('#wrapper').clone();
+  var registerButtons = function () {
+    $('.scorecard').on('click', function() {
+      $('#screen').fadeIn(300);
+    });
+
+    $('.deal').on('click', game.deal);
   };
-  
-  game.start();
 
-  $('.scorecard').on('click', function() {
-    $('#screen').fadeIn(300);
-    $('.board').css({'z-index': '-1'});
-  });
+  var resetScorecard = function () {
+    $('#player1-scores, #player2-scores').empty();
+    $('.winner').remove();
+  };
+
+  var resetBoard = function () {
+    $('#wrapper').html(boardHtml);
+    $('.reset').fadeOut(300, function () {
+      $('.shuffle').show();
+    });
+    registerButtons();
+  };
 
   $('.settings').on('click', function() {
     if ($('.score-screen').is(':visible')) {
@@ -741,61 +739,30 @@ $(document).ready(function() {
           $('.settings-screen').hide();
           $('.instructions-screen').hide();
           $('.score-screen').show();
-          $('.board').css({'z-index': ''});
         });
       }
     });
   });
 
-  // $('#image1').on('click', function() {
-  //   $('.side-a').css({
-  //     'background': '#498FBC url("img/cardBack1.jpg")',
-  //     'background-position': '50% 14%',
-  //     'background-size': '200px',
-  //     '-webkit-filter': 'grayscale(.3)',
-  //     'border-color': '#a32828'
-  //   });
-  // });
+  $('#image1').on('click', function() {
+    $('body').removeClass().addClass('card-back1');
+  });
 
-  // $('#image2').on('click', function() {
-  //   $('.side-a').css({
-  //     'background': '#498FBC url("img/cardBack2.jpg")',
-  //     'background-position': '50% 39%',
-  //     'background-size': '200px',
-  //     '-webkit-filter': 'grayscale(.1)',
-  //     'border-color': '#7C7C7C'
-  //   });
-  // });
+  $('#image2').on('click', function() {
+    $('body').removeClass().addClass('card-back2');
+  });
 
-  // $('#image3').on('click', function() {
-  //   $('.side-a').css({
-  //     'background': '#498FBC url("img/cardBack3.jpg")',
-  //     'background-position': '50% 12%',
-  //     'background-size': '230px',
-  //     '-webkit-filter': 'grayscale(.2)',
-  //     'border-color': '#308452'
-  //   });
-  // });
+  $('#image3').on('click', function() {
+    $('body').removeClass().addClass('card-back3');
+  });
 
-  // $('#image4').on('click', function() {
-  //   $('.card .side-a').css({
-  //     'background': '#498FBC url("img/cardBack4.jpg")',
-  //     'background-position': '50% 63%',
-  //     'background-size': '240px',
-  //     '-webkit-filter': 'grayscale(.1)',
-  //     'border-color': '#141414'
-  //   });
-  // });
+  $('#image4').on('click', function() {
+    $('body').removeClass().addClass('card-back4');
+  });
 
-  // $('#image5').on('click', function() {
-  //   $('.card .side-a').css({
-  //     'background': '#498FBC url("img/cardBack5.jpg")',
-  //     'background-position': '50% 21%',
-  //     'background-size': '155px',
-  //     '-webkit-filter': 'grayscale(.1)',
-  //     'border-color': '#494237'
-  //   });
-  // });
+  $('#image5').on('click', function() {
+    $('body').removeClass();
+  });
 
   // $('#image6').on('click', function() {
   //   $('.card .side-a').css({
@@ -807,16 +774,21 @@ $(document).ready(function() {
   //   });
   // });
 
-  $('.deal').on('click', game.deal);
-
   $('.shuffle').on('click', function() {
-    $('#wrapper').replaceWith(boardClones[roundCounter]);
-    game.advance();
-    $('.scorecard').on('click', function() {
-      $('#screen').fadeIn(300);
-    });
+    resetBoard();
 
-    $('.deal').on('click', game.deal);
-    roundCounter++;
+    game.advance();
+    game.start();
   });
+
+  $('.reset').on('click', function() {
+    resetBoard();
+    resetScorecard();
+
+    game.reset();
+    game.start();
+  });
+
+  registerButtons();
+  game.start();
 });
