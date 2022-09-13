@@ -25,7 +25,7 @@ var game = function() {
   isDiscardEnabled = true,
   isCardDrawn = false,
   playerToBeat = null,
-  deckOffset = {};
+  selectedOffset = {};
 
   var gameStart = function() {
     cards.destroy();
@@ -221,12 +221,9 @@ var game = function() {
     selectCard($deck);
     $('.deck .side-b').attr('class', 'side-b ' +  card.suit).text(card.identifier);
 
-    deckOffset = $deck.offset();
-    console.log("left: " + deckOffset.left);
     $deck.attr('id', card.name).css({'-webkit-transform': 'rotateY(-.5turn)', 'z-index': 3, 'left': 0, 'top': 0}).addClass('revealed'); 
 
     $('.draw').off().addClass('disabled');
-    $('.discard').addClass('enabled').on('click', discardClick);
   };
 
   var drawDiscard = function(pos) {
@@ -251,7 +248,7 @@ var game = function() {
               discardPile[discardPile.length - 1] = swappedCard;
               console.log(discardPile);
               console.log(swappedCard);
-              displaySwap(pos, $('.discard').offset(), false, false);
+              displaySwap(pos, false, false);
               checkStatus();
           } else {
             console.log(activePlayer + " must swap or discard the " + topCard.name + " to end their turn.");
@@ -279,14 +276,14 @@ var game = function() {
       player.hand[pos].card = topCard;
       player.hand[pos].visible = true;
 
-      displaySwap(pos, deckOffset, true, gameStage == "endgame");
+      displaySwap(pos, true, gameStage == "endgame");
       discardCard(swappedCard);
     } else {
       console.log("Draw a card from the deck or the discard pile.");
     }
   };
 
-  var displaySwap = function(pos, selectedOffset, updateDiscard2, freezeDeck) {
+  var displaySwap = function(pos, updateDiscard2, freezeDeck) {
     var $discard = $('.discard'),
       $selected = $('.selected'),
       $target = $('#' + activePlayer + ' .card-' + pos),
@@ -295,7 +292,7 @@ var game = function() {
 
     $('.selected').css({'z-index': 3, 'left': $targetLeft - selectedOffset.left, 'top': $targetTop - selectedOffset.top});
 
-    $target.on('transitionend', function() {
+    $target.one('transitionend', function() {
       if(updateDiscard2) {
         $('.discard-2').attr('id', $discard.attr('id')).show();
         $('.discard-2 .side-b').attr('class', $discard.children('.side-b').attr('class')).text($discard.children('.side-b').text());
@@ -344,7 +341,6 @@ var game = function() {
       $selected = $('.selected');
 
     $('.selected').one('transitionend', function(){
-      $(this).on('transitionend', function() {
         $('.discard-2').attr('id', $discard.attr('id')).show();
         $('.discard-2 .side-b').attr('class', $discard.children('.side-b').attr('class')).text($discard.children('.side-b').text());
         $('<div class="card discard enabled revealed" id="' + $selected.attr('id') + '" style="left: 0px; top: 0px; -webkit-transform: rotateY(-0.5turn); z-index: 2;">' +
@@ -361,12 +357,12 @@ var game = function() {
           $('.deck').on('click', deckClick);
           $('.discard').on('click', discardClick);
         }
-      });
-    }).css({'left': $discard.offset().left - deckOffset.left, 'top': $discard.offset().top - deckOffset.top, 'z-index': 5});
+    }).css({'left': $discard.offset().left - selectedOffset.left, 'top': $discard.offset().top - selectedOffset.top, 'z-index': 5});
   };
 
   var selectCard = function($card) {
     $card.css({'border-color': '#FFEC85'}).addClass('selected').removeClass('enabled');
+    selectedOffset = $card.offset();
     $('#' + activePlayer + ' .card').addClass('enabled');
     $('#player1 .card, #player2 .card').off();
     $('#' + activePlayer + ' .card').on('click', game.selectCard);
@@ -636,7 +632,11 @@ $(document).ready(function() {
       document.body.style.zoom = "80%";
 
   $(window).on('resize', function() {
-    if ($(this).height() < 860)
+    var height = $(this).height();
+
+    if (height < 500)
+      document.body.style.zoom = "60%";
+    else if (height < 860)
       document.body.style.zoom = "80%";
     else
       document.body.style.zoom = "100%";
@@ -766,16 +766,6 @@ $(document).ready(function() {
   $('#image5').on('click', function() {
     $('body').removeClass();
   });
-
-  // $('#image6').on('click', function() {
-  //   $('.card .side-a').css({
-  //     'background': '#498FBC url("img/cardBack6.jpg")',
-  //     'background-position': '50% 63%',
-  //     'background-size': '150px',
-  //     '-webkit-filter': 'grayscale(.1)',
-  //     'border-color': '#fff'
-  //   });
-  // });
 
   $('.shuffle').on('click', function() {
     resetBoard();
